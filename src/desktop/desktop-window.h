@@ -62,6 +62,7 @@ typedef enum {
     DW_BG_STRETCH,
     DW_BG_CENTER,
     DW_BG_ZOOM,
+    DW_BG_TRANSPARENT
 }DWBgType;
 
 typedef enum {

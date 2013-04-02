@@ -130,7 +130,13 @@ void fm_desktop_update_wallpaper()
     GdkPixbuf* pix;
     int i;
 
-    if( app_settings.show_wallpaper && app_settings.wallpaper )
+    if ( app_settings.show_wallpaper && 
+                            app_settings.wallpaper_mode == WPM_TRANSPARENT )
+    {
+        type = DW_BG_TRANSPARENT;
+        pix = NULL;
+    }
+    else if( app_settings.show_wallpaper && app_settings.wallpaper )
     {
         switch( app_settings.wallpaper_mode )
         {

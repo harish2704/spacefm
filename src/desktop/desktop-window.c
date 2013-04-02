@@ -755,6 +755,43 @@ void desktop_window_set_background( DesktopWindow* win, GdkPixbuf* src_pix, DWBg
         gdk_window_set_back_pixmap( gtk_widget_get_window( ((GtkWidget*)win) ), pixmap, FALSE );
 #endif
     }
+    else if ( type == DW_BG_TRANSPARENT )
+    {
+        int dest_w = gdk_screen_get_width( 
+                                gtk_widget_get_screen( (GtkWidget*)win ) );
+        int dest_h = gdk_screen_get_height( 
+                                gtk_widget_get_screen( (GtkWidget*)win ) );
+#if GTK_CHECK_VERSION (3, 0, 0)
+        pixmap = XCreatePixmap(xdisplay, xroot, dest_w, dest_h, depth);
+        surface = cairo_xlib_surface_create (xdisplay, pixmap, xvisual,
+                                             dest_w, dest_h);
+        cr = cairo_create ( surface );
+#else
+        // set rgba colormap for GTK2
+        gtk_widget_set_default_colormap( gdk_screen_get_rgba_colormap( 
+                                gtk_widget_get_screen( (GtkWidget*)win ) ) );
+
+        pixmap = gdk_pixmap_new( gtk_widget_get_window( ((GtkWidget*)win) ),
+                                 dest_w, dest_h, -1 );
+        cr = gdk_cairo_create ( pixmap );
+#endif
+        cairo_save( cr );
+        cairo_set_operator( cr, CAIRO_OPERATOR_SOURCE );
+        cairo_set_source_rgba( cr, 0.0, 0.0, 0.0, 0.0 );
+        cairo_rectangle( cr, 0, 0, dest_w, dest_h );
+        cairo_paint( cr );
+        cairo_restore( cr );
+        
+        // free
+#if GTK_CHECK_VERSION (3, 0, 0)
+        XFreePixmap ( xdisplay, pixmap );
+        pixmap = 0;
+#else
+        g_object_unref( pixmap );
+        pixmap = NULL;
+#endif
+        cairo_destroy ( cr );
+    }
     else
         gdk_window_set_background( gtk_widget_get_window( ((GtkWidget*)win) ), &win->bg );
 
