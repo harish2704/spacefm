@@ -13,6 +13,7 @@
 
 #include "private.h"
 
+#include <sys/sysmacros.h>
 #include <gtk/gtk.h>
 #include <glib.h>
 

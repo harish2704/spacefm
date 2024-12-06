@@ -118,6 +118,28 @@ XSet* book_icon_set_cached = NULL;
 guint xset_autosave_timer = 0;
 gboolean xset_autosave_request = FALSE;
 
+// cache these for speed in event handlers
+XSet* evt_win_focus;
+XSet* evt_win_move;
+XSet* evt_win_click;
+XSet* evt_win_key;
+XSet* evt_win_close;
+XSet* evt_pnl_show;
+XSet* evt_pnl_focus;
+XSet* evt_pnl_sel;
+XSet* evt_tab_new;
+XSet* evt_tab_chdir;
+XSet* evt_tab_focus;
+XSet* evt_tab_close;
+XSet* evt_device;
+
+// instance-wide command history
+GList* xset_cmd_history;
+
+// These will contain the su and gsu settings from /etc/spacefm/spacefm.conf
+char* settings_terminal_su;
+char* settings_graphical_su;
+
 typedef void ( *SettingsParseFunc ) ( char* line );
 
 static void color_from_str( GdkColor* ret, const char* value );

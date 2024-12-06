@@ -2683,7 +2683,7 @@ exo_icon_view_key_press_event (GtkWidget   *widget,
     /* allocate a new event to forward */
     new_event = gdk_event_copy ((GdkEvent *) event);
     g_object_unref (G_OBJECT (new_event->key.window));
-    new_event->key.window = g_object_ref (G_OBJECT (gtk_widget_get_window (GTK_WIDGET(icon_view->priv->search_entry))));
+    new_event->key.window = gtk_widget_get_window (GTK_WIDGET(icon_view->priv->search_entry));
 
     /* send the event to the search entry. If the "preedit-changed" signal is
    * emitted during this event, priv->search_imcontext_changed will be set.
@@ -3082,7 +3082,7 @@ exo_icon_view_set_hadjustment (ExoIconView   *icon_view,
     if (!hadj)
         hadj = gtk_adjustment_new (0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
 
-    icon_view->priv->hadjustment = g_object_ref_sink (G_OBJECT (hadj));
+    icon_view->priv->hadjustment = (hadj);
 
     g_signal_connect (icon_view->priv->hadjustment, "value-changed",
                       G_CALLBACK (exo_icon_view_adjustment_changed),
@@ -3109,7 +3109,7 @@ exo_icon_view_set_vadjustment (ExoIconView   *icon_view,
     if (!vadj)
         vadj = gtk_adjustment_new (0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
 
-    icon_view->priv->vadjustment = g_object_ref_sink (G_OBJECT (vadj));
+    icon_view->priv->vadjustment = (vadj);
 
     g_signal_connect (icon_view->priv->vadjustment, "value-changed",
                       G_CALLBACK (exo_icon_view_adjustment_changed),
