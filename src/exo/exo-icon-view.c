@@ -2666,6 +2666,9 @@ exo_icon_view_key_press_event (GtkWidget   *widget,
 
     /* make sure the search window is realized */
     gtk_widget_realize (icon_view->priv->search_window);
+    if( strlen( gdk_keyval_name(event->keyval) ) > 1){
+         return FALSE;
+     }
 
     /* make a copy of the current text */
     old_text = gtk_editable_get_chars (GTK_EDITABLE (icon_view->priv->search_entry), 0, -1);
@@ -8555,6 +8558,7 @@ exo_icon_view_search_ensure_directory (ExoIconView *icon_view)
 
     /* allocate a new search window */
     icon_view->priv->search_window = gtk_window_new (GTK_WINDOW_POPUP);
+    gtk_window_set_transient_for(GTK_WINDOW(icon_view->priv->search_window), GTK_WINDOW(toplevel));
     if (gtk_window_has_group (GTK_WINDOW (toplevel)))
         gtk_window_group_add_window (gtk_window_get_group (GTK_WINDOW (toplevel)), GTK_WINDOW (icon_view->priv->search_window));
     gtk_window_set_modal (GTK_WINDOW (icon_view->priv->search_window), TRUE);
